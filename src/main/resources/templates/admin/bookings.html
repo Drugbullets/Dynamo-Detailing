@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Bookings - Dynamo Detailing Admin</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>Dynamo Detailing Admin</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li><a th:href="@{/admin/bookings}" class="active">Bookings</a></li>
+                    <li><a th:href="@{/admin/services}">Services</a></li>
+                    <li><a th:href="@{/admin/customers}">Customers</a></li>
+                    <li><a th:href="@{/admin/logout}">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="admin-header">
+                <h1>Manage Bookings</h1>
+                <p>View and manage all customer bookings</p>
+            </div>
+
+            <div class="bookings-filters">
+                <div class="filter-group">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select id="statusFilter" onchange="filterBookings()">
+                        <option value="">All Statuses</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="CONFIRMED">Confirmed</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="COMPLETED">Completed</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bookings-table-container">
+                <table class="bookings-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Date & Time</th>
+                            <th>Location</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="booking : ${bookings}" class="booking-row" th:attr="data-status=${booking.status}">
+                            <td th:text="${booking.bookingId}">#001</td>
+                            <td>
+                                <div class="customer-info">
+                                    <strong th:text="${booking.customer.firstName + ' ' + booking.customer.lastName}">Customer Name</strong>
+                                    <br>
+                                    <small th:text="${booking.customer.email}">email@example.com</small>
+                                    <br>
+                                    <small th:text="${booking.customer.phoneNumber}">Phone</small>
+                                    <br>
+                                    <small th:if="${booking.customer.address != null and !booking.customer.address.isEmpty()}">
+                                        🏠 <span th:text="${booking.customer.address + ', ' + (booking.customer.city != null ? booking.customer.city : '') + ', ' + (booking.customer.state != null ? booking.customer.state : '') + ' ' + (booking.customer.zipCode != null ? booking.customer.zipCode : '')}">Customer Address</span>
+                                    </small>
+                                </div>
+                            </td>
+                            <td th:text="${booking.service.serviceName}">Service Name</td>
+                            <td>
+                                <div class="datetime-info">
+                                    <strong th:text="${#temporals.format(booking.bookingDate, 'MMM dd, yyyy')}">Date</strong>
+                                    <br>
+                                    <small th:text="${#temporals.format(booking.bookingTime, 'h:mm a')}">Time</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="location-info">
+                                    <small th:text="${booking.locationAddress}">Address</small>
+                                    <br>
+                                    <small th:text="${booking.locationCity + ', ' + booking.locationState + ' ' + booking.locationZip}">City, State ZIP</small>
+                                </div>
+                            </td>
+                            <td class="amount" th:text="'$' + ${booking.totalAmount}">$0.00</td>
+                            <td>
+                                <span class="status-badge" th:classappend="'status-' + ${booking.status.name().toLowerCase()}" th:text="${booking.status.name().replace('_', ' ')}">Status</span>
+                            </td>
+                            <td class="actions">
+                                <select class="status-select" th:attr="data-booking-id=${booking.bookingId}" onchange="updateBookingStatus(this)">
+                                    <option value="PENDING" th:selected="${booking.status.name() == 'PENDING'}">Pending</option>
+                                    <option value="CONFIRMED" th:selected="${booking.status.name() == 'CONFIRMED'}">Confirmed</option>
+                                    <option value="IN_PROGRESS" th:selected="${booking.status.name() == 'IN_PROGRESS'}">In Progress</option>
+                                    <option value="COMPLETED" th:selected="${booking.status.name() == 'COMPLETED'}">Completed</option>
+                                    <option value="CANCELLED" th:selected="${booking.status.name() == 'CANCELLED'}">Cancelled</option>
+                                </select>
+                                <button class="btn btn-small btn-primary" th:onclick="'viewBooking(' + ${booking.bookingId} + ')'">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div th:if="${#lists.isEmpty(bookings)}" class="no-bookings">
+                    <p>No bookings found.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function filterBookings() {
+            const filter = document.getElementById('statusFilter').value.toLowerCase();
+            const rows = document.querySelectorAll('.booking-row');
+            
+            rows.forEach(row => {
+                const status = row.getAttribute('data-status').toLowerCase();
+                if (filter === '' || status === filter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function updateBookingStatus(selectElement) {
+            const bookingId = selectElement.getAttribute('data-booking-id');
+            const newStatus = selectElement.value;
+            
+            // Here you would typically send an AJAX request to update the booking status
+            console.log('Updating booking ' + bookingId + ' to status: ' + newStatus);
+            
+            // For now, just update the status badge
+            const statusBadge = selectElement.closest('tr').querySelector('.status-badge');
+            statusBadge.textContent = newStatus.replace('_', ' ');
+            statusBadge.className = 'status-badge status-' + newStatus.toLowerCase();
+            
+            // Update the row's data-status attribute for filtering
+            selectElement.closest('tr').setAttribute('data-status', newStatus);
+        }
+        
+        function viewBooking(bookingId) {
+            // Here you would typically navigate to a detailed booking view
+            console.log('Viewing booking ' + bookingId);
+            alert('Viewing booking ' + bookingId + ' - This would open a detailed view');
+        }
+    </script>
+
+    <style>
+        .bookings-filters {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .filter-group {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        
+        .filter-group label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .bookings-table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .bookings-table th,
+        .bookings-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .bookings-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .customer-info,
+        .datetime-info,
+        .location-info {
+            font-size: 14px;
+        }
+        
+        .amount {
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-pending { background: #ffc107; color: #000; }
+        .status-confirmed { background: #007bff; color: #fff; }
+        .status-in_progress { background: #fd7e14; color: #fff; }
+        .status-completed { background: #28a745; color: #fff; }
+        .status-cancelled { background: #dc3545; color: #fff; }
+        
+        .actions {
+            white-space: nowrap;
+        }
+        
+        .status-select {
+            margin-right: 10px;
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        
+        .no-bookings {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+    </style>
+</body>
+</html>

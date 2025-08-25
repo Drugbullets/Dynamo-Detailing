@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Dynamo Detailing</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>Dynamo Detailing</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/services}" class="active">Services</a></li>
+                    <li><a th:href="@{/book}">Book Now</a></li>
+                    <li><a th:href="@{/about}">About</a></li>
+                    <li><a th:href="@{/contact}">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Our Services</h1>
+                <p>Professional car detailing services tailored to your needs</p>
+            </div>
+        </section>
+
+        <section class="services-section">
+            <div class="container">
+                <div class="services-grid">
+                    <div class="service-card" th:each="service : ${services}">
+                        <h3 th:text="${service.serviceName}">Service Name</h3>
+                        <p class="price" th:text="'$' + ${service.price}">$0.00</p>
+                        <p class="description" th:text="${service.description}">Service description</p>
+                        <p class="duration" th:text="'Duration: ' + ${service.durationMinutes} + ' minutes'">Duration: 0 minutes</p>
+                        <a th:href="@{/book(serviceId=${service.serviceId})}" class="btn btn-primary">Book This Service</a>
+                    </div>
+                </div>
+                
+                <div th:if="${#lists.isEmpty(services)}" class="no-services">
+                    <p>No services available at the moment. Please check back later.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Dynamo Detailing. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

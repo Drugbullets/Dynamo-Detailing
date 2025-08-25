@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Booking Confirmation - Dynamo Detailing</title>
+    <meta name="description" content="Your auto detailing service booking confirmation with Dynamo Detailing.">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a th:href="@{/}" class="logo">Dynamo Detailing</a>
+                <ul class="nav-menu">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/about}">About</a></li>
+                    <li><a th:href="@{/services}">Services</a></li>
+                    <li><a th:href="@{/book}" class="btn btn-primary">Book Now</a></li>
+                    <li><a th:href="@{/contact}">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Confirmation Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="section-title">
+                <h1 style="color: #dc3545;">✅ Booking Confirmed!</h1>
+                <p>Thank you for choosing Dynamo Detailing. Your appointment has been successfully booked.</p>
+            </div>
+            
+            <div class="form-container">
+                <div class="alert alert-success">
+                    <strong>Success!</strong> Your booking has been submitted and we will contact you shortly to confirm your appointment.
+                </div>
+
+                <div th:if="${booking}">
+                    <h3 style="color: #1a1a1a; margin-bottom: 1.5rem;">Booking Details</h3>
+                    
+                    <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div>
+                                <h4 style="color: #dc3545; margin-bottom: 1rem;">Booking Information</h4>
+                                <p><strong>Booking ID:</strong> <span th:text="${booking.bookingId}" style="color: #dc3545; font-weight: bold;">#123</span></p>
+                                <p><strong>Service:</strong> <span th:text="${booking.service.serviceName}">Service Name</span></p>
+                                <p><strong>Date:</strong> <span th:text="${booking.bookingDate}">2023-01-01</span></p>
+                                <p><strong>Time:</strong> <span th:text="${booking.bookingTime}">10:00</span></p>
+                                <p><strong>Duration:</strong> <span th:text="${booking.service.durationMinutes} + ' minutes'">60 minutes</span></p>
+                                <p><strong>Price:</strong> <span th:text="'$' + ${booking.totalAmount}" style="color: #dc3545; font-weight: bold;">$25.00</span></p>
+                                <p><strong>Status:</strong> 
+                                    <span class="badge badge-pending" th:text="${booking.status}">PENDING</span>
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h4 style="color: #dc3545; margin-bottom: 1rem;">Customer Information</h4>
+                                <p><strong>Name:</strong> <span th:text="${booking.customer.fullName}">Customer Name</span></p>
+                                <p><strong>Email:</strong> <span th:text="${booking.customer.email}">email@example.com</span></p>
+                                <p><strong>Phone:</strong> <span th:text="${booking.customer.phoneNumber}">Phone Number</span></p>
+                                
+                                <div th:if="${booking.customer.address != null and !booking.customer.address.isEmpty()}">
+                                    <h4 style="color: #dc3545; margin: 1rem 0;">Customer Address</h4>
+                                    <p>
+                                        🏠 <span th:text="${booking.customer.address}">Customer Address</span><br>
+                                        <span th:text="${(booking.customer.city != null ? booking.customer.city + ', ' : '') + (booking.customer.state != null ? booking.customer.state : '') + ' ' + (booking.customer.zipCode != null ? booking.customer.zipCode : '')}">City, State ZIP</span>
+                                    </p>
+                                </div>
+                                
+                                <h4 style="color: #dc3545; margin: 1rem 0;">Service Location</h4>
+                                <p>📍 <span th:text="${booking.fullLocation}">Address</span></p>
+                                
+                                <div th:if="${booking.specialInstructions}">
+                                    <h4 style="color: #dc3545; margin: 1rem 0;">Special Instructions</h4>
+                                    <p th:text="${booking.specialInstructions}">Special instructions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+                        <h4 style="color: #856404; margin-bottom: 1rem;">📞 What Happens Next?</h4>
+                        <ul style="color: #856404; margin: 0; padding-left: 1.5rem;">
+                            <li>Our team will contact you within 2 hours to confirm your appointment</li>
+                            <li>We'll arrive at your specified location 15 minutes before the scheduled time</li>
+                            <li>Payment is due upon completion of the service</li>
+                            <li>We accept cash, credit cards, and digital payments</li>
+                        </ul>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <a th:href="@{/}" class="btn btn-primary btn-lg" style="margin-right: 1rem;">Back to Home</a>
+                        <a th:href="@{/book}" class="btn btn-secondary btn-lg">Book Another Service</a>
+                    </div>
+                </div>
+                
+                <div th:unless="${booking}">
+                    <div class="alert alert-error">
+                        <strong>Error:</strong> Booking details not found.
+                    </div>
+                    <div style="text-align: center;">
+                        <a th:href="@{/book}" class="btn btn-primary btn-lg">Try Booking Again</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dynamo Detailing</h3>
+                    <p>Professional auto detailing services that bring out the best in your vehicle. We use premium products and techniques to ensure exceptional results every time.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <p><a th:href="@{/services}">Basic Wash</a></p>
+                    <p><a th:href="@{/services}">Premium Wash</a></p>
+                    <p><a th:href="@{/services}">Full Detail</a></p>
+                    <p><a th:href="@{/services}">Interior Deep Clean</a></p>
+                    <p><a th:href="@{/services}">Paint Correction</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📞 Phone: (555) 123-4567</p>
+                    <p>✉️ Email: info@dynamodetailing.com</p>
+                    <p>📍 Service Area: City-wide mobile service</p>
+                    <p>🕒 Hours: Mon-Sat 8AM-6PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a th:href="@{/}">Home</a></p>
+                    <p><a th:href="@{/about}">About Us</a></p>
+                    <p><a th:href="@{/book}">Book Service</a></p>
+                    <p><a th:href="@{/contact}">Contact Us</a></p>
+                    <p><a th:href="@{/admin/login}">Admin Login</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Dynamo Detailing. All rights reserved. | Professional Auto Detailing Services</p>
+            </div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

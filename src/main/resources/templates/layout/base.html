@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} ?: 'Dynamo Detailing - Professional Auto Detailing Services'">Dynamo Detailing</title>
+    <meta name="description" content="Professional auto detailing services including washing, polishing, interior cleaning, and more. Book your appointment today with Dynamo Detailing.">
+    <meta name="keywords" content="auto detailing, car wash, car polish, interior cleaning, professional detailing">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a th:href="@{/}" class="logo">Dynamo Detailing</a>
+                <ul class="nav-menu">
+                    <li><a th:href="@{/}" th:classappend="${#httpServletRequest.requestURI == '/'} ? 'active' : ''">Home</a></li>
+                    <li><a th:href="@{/about}" th:classappend="${#httpServletRequest.requestURI == '/about'} ? 'active' : ''">About</a></li>
+                    <li><a th:href="@{/services}" th:classappend="${#httpServletRequest.requestURI == '/services' or #strings.startsWith(#httpServletRequest.requestURI, '/services/')} ? 'active' : ''">Services</a></li>
+                    <li><a th:href="@{/book}" th:classappend="${#httpServletRequest.requestURI == '/book'} ? 'active' : ''" class="btn btn-primary">Book Now</a></li>
+                    <li><a th:href="@{/contact}" th:classappend="${#httpServletRequest.requestURI == '/contact'} ? 'active' : ''">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main layout:fragment="content">
+        <!-- Content will be inserted here -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dynamo Detailing</h3>
+                    <p>Professional auto detailing services that bring out the best in your vehicle. We use premium products and techniques to ensure exceptional results every time.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <p><a th:href="@{/services}">Basic Wash</a></p>
+                    <p><a th:href="@{/services}">Premium Wash</a></p>
+                    <p><a th:href="@{/services}">Full Detail</a></p>
+                    <p><a th:href="@{/services}">Interior Deep Clean</a></p>
+                    <p><a th:href="@{/services}">Paint Correction</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📞 Phone: (555) 123-4567</p>
+                    <p>✉️ Email: info@dynamodetailing.com</p>
+                    <p>📍 Service Area: City-wide mobile service</p>
+                    <p>🕒 Hours: Mon-Sat 8AM-6PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a th:href="@{/}">Home</a></p>
+                    <p><a th:href="@{/about}">About Us</a></p>
+                    <p><a th:href="@{/book}">Book Service</a></p>
+                    <p><a th:href="@{/contact}">Contact Us</a></p>
+                    <p><a th:href="@{/admin/login}">Admin Login</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Dynamo Detailing. All rights reserved. | Professional Auto Detailing Services</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

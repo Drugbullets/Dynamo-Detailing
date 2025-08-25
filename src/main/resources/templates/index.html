@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Dynamo Detailing - Professional Auto Detailing Services</title>
+    <meta name="description" content="Professional auto detailing services including washing, polishing, interior cleaning, and more. Book your appointment today with Dynamo Detailing.">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a th:href="@{/}" class="logo">Dynamo Detailing</a>
+                <ul class="nav-menu">
+                    <li><a th:href="@{/}" class="active">Home</a></li>
+                    <li><a th:href="@{/about}">About</a></li>
+                    <li><a th:href="@{/services}">Services</a></li>
+                    <li><a th:href="@{/book}" class="btn btn-primary">Book Now</a></li>
+                    <li><a th:href="@{/contact}">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Professional Auto Detailing</h1>
+            <p>Transform your vehicle with <span class="tagline">Dynamo Detailing</span> - where premium meets perfection</p>
+            <p>Mobile service • Premium products • Expert technicians • Satisfaction guaranteed</p>
+            <div style="margin-top: 2rem;">
+                <a th:href="@{/book}" class="btn btn-primary btn-lg">Book Your Service</a>
+                <a th:href="@{/services}" class="btn btn-secondary btn-lg" style="margin-left: 1rem;">View Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Premium Services</h2>
+                <p>Choose from our comprehensive range of professional auto detailing services designed to keep your vehicle looking its absolute best</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card" th:each="service : ${services}">
+                    <h3 th:text="${service.serviceName}">Service Name</h3>
+                    <p th:text="${service.description}">Service description goes here</p>
+                    <div class="service-price" th:text="'$' + ${service.price}">$25.00</div>
+                    <div class="service-duration" th:text="${service.durationMinutes} + ' minutes'">60 minutes</div>
+                    <a th:href="@{/book(serviceId=${service.serviceId})}" class="btn btn-outline" style="margin-top: 1rem;">Book This Service</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a th:href="@{/services}" class="btn btn-secondary btn-lg">View All Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="about-section" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Dynamo Detailing?</h2>
+                <p>We're not just another car wash - we're auto detailing specialists committed to excellence</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Professional Excellence</h3>
+                    <p>Our team of experienced technicians uses only premium products and proven techniques to deliver exceptional results that exceed your expectations.</p>
+                    
+                    <h3>Convenient Mobile Service</h3>
+                    <p>We come to you! Whether you're at home, work, or anywhere in the city, our mobile service brings professional detailing right to your location.</p>
+                    
+                    <ul class="about-features">
+                        <li>Premium products and equipment</li>
+                        <li>Experienced and trained technicians</li>
+                        <li>Mobile service for your convenience</li>
+                        <li>Satisfaction guarantee</li>
+                        <li>Competitive pricing</li>
+                        <li>Eco-friendly practices</li>
+                    </ul>
+                </div>
+                
+                <div class="about-image">
+                    <img src="/images/detailing-process.jpg" alt="Professional Auto Detailing Process" style="width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="services-section" style="background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); color: #fff;">
+        <div class="container">
+            <div class="section-title">
+                <h2 style="color: #ffc107;">Ready to Transform Your Vehicle?</h2>
+                <p style="color: #ccc;">Book your appointment today and experience the Dynamo Detailing difference</p>
+                <div style="margin-top: 2rem;">
+                    <a th:href="@{/book}" class="btn btn-primary btn-lg">Book Now</a>
+                    <a th:href="@{/contact}" class="btn btn-secondary btn-lg" style="margin-left: 1rem;">Get Quote</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dynamo Detailing</h3>
+                    <p>Professional auto detailing services that bring out the best in your vehicle. We use premium products and techniques to ensure exceptional results every time.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <p><a th:href="@{/services}">Basic Wash</a></p>
+                    <p><a th:href="@{/services}">Premium Wash</a></p>
+                    <p><a th:href="@{/services}">Full Detail</a></p>
+                    <p><a th:href="@{/services}">Interior Deep Clean</a></p>
+                    <p><a th:href="@{/services}">Paint Correction</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📞 Phone: (555) 123-4567</p>
+                    <p>✉️ Email: info@dynamodetailing.com</p>
+                    <p>📍 Service Area: City-wide mobile service</p>
+                    <p>🕒 Hours: Mon-Sat 8AM-6PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a th:href="@{/}">Home</a></p>
+                    <p><a th:href="@{/about}">About Us</a></p>
+                    <p><a th:href="@{/book}">Book Service</a></p>
+                    <p><a th:href="@{/contact}">Contact Us</a></p>
+                    <p><a th:href="@{/admin/login}">Admin Login</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Dynamo Detailing. All rights reserved. | Professional Auto Detailing Services</p>
+            </div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>
