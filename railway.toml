@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "java -Dspring.profiles.active=prod -Dserver.port=$PORT -jar target/detailing-1.0.0.jar"
+startCommand = "java -Dspring.profiles.active=railway -Dserver.port=$PORT -jar target/detailing-1.0.0.jar"
 
 [build.env]
 MAVEN_ARGS = "clean package -DskipTests"
