@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: dynamo-detailing
+    runtime: java
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -Dspring.profiles.active=free -Dserver.port=$PORT -jar target/detailing-1.0.0.jar
+    plan: free
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
